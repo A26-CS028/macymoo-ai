@@ -2,5 +2,8 @@ fastapi
 pydantic>=2
 pydantic-settings
 google-genai
-# Tambahkan scikit-learn, numpy, scipy, joblib (versi sama dengan training/requirements.txt)
-# saat uji bundel 500 MB dan setelah model MooLabel siap.
+# MooLabel: versi harus sama dengan training/requirements.txt
+scikit-learn==1.7.2
+scipy==1.16.3
+numpy==2.2.6
+joblib==1.6.0
