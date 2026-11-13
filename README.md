@@ -14,11 +14,9 @@ Dataset MooLabel dibuat di [macymoo-ds](https://github.com/A26-CS028/macymoo-ds)
 
 | Berkas | Versi dataset | Commit asal di macymoo-ds |
 |---|---|---|
-| `data/moolabel/moolabel_v1.csv` | v1 | (diisi nanti, ambil dengan `git log -1 --format=%h -- moolabel-dataset/output/moolabel_v1.csv` di macymoo-ds) |
+| `data/moolabel/moolabel_v1.csv` | v1 (477 catatan) | `fd38fb0` |
 
-Setiap kali dataset disalin ulang, perbarui baris tabel di atas.
-
-`data/seed/moolabel_seed.csv` (16 contoh catatan) dipakai untuk menguji pipeline sebelum dataset siap.
+Setiap kali dataset disalin ulang, perbarui baris tabel di atas (`git log -1 --format=%h -- moolabel-dataset/output/moolabel_v1.csv` di macymoo-ds).
 
 ## Library
 
@@ -44,7 +42,7 @@ Versi scikit-learn di `training/requirements.txt` harus sama dengan yang di `req
 | `app/` | FastAPI: `moolabel/` dan `moobot/` |
 | `models/` | Model terlatih dan metadatanya |
 | `training/` | Pelatihan dan evaluasi (tidak ikut deploy) |
-| `data/` | Dataset salinan dari macymoo-ds, data seed |
+| `data/` | Dataset salinan dari macymoo-ds |
 | `tests/` | Pengujian |
 
 ## Repo terkait
