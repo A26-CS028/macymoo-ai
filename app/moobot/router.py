@@ -14,8 +14,8 @@ router = APIRouter(
 @router.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
     try:
-        answer = ask_gemini(req.question, req.context)
+        reply = ask_gemini(req.message, req.context)
     except GeminiUnavailable:
         # Express meneruskan sebagai 503; pesanan tetap tersimpan
         raise HTTPException(503, "MooBot unavailable")
-    return ChatResponse(answer=answer)
+    return ChatResponse(reply=reply)

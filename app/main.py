@@ -11,6 +11,7 @@ app = FastAPI(
     redoc_url=None,
     openapi_url=None,
 )
-app.include_router(health_router)
-app.include_router(moobot_router)
-# app.include_router(moolabel_router)
+# Semua endpoint di bawah /v1 sesuai kontrak (KF 9.8, docs/openapi.yaml di macymoo-fs)
+app.include_router(health_router, prefix="/v1")
+app.include_router(moobot_router, prefix="/v1")
+# app.include_router(moolabel_router, prefix="/v1")
