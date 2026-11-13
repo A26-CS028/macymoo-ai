@@ -48,3 +48,18 @@ def test_gemini_gagal_balas_503(client, auth, monkeypatch):
 def test_input_kosong_ditolak(client, auth):
     r = client.post(URL, json={"message": "", "context": "x"}, headers=auth)
     assert r.status_code == 422
+
+
+def test_context_terlalu_panjang_ditolak(client, auth):
+    r = client.post(URL, json={"message": "halo", "context": "x" * 8001}, headers=auth)
+    assert r.status_code == 422
+
+
+def test_secret_pendek_ditolak_saat_start():
+    import pytest
+    from pydantic import ValidationError
+
+    from app.config import Settings
+
+    with pytest.raises(ValidationError):
+        Settings(internal_secret="terlalu-pendek")

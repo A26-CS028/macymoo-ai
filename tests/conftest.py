@@ -1,7 +1,7 @@
 import os
 
 # Harus diatur sebelum app diimpor, karena Settings dibaca saat import.
-os.environ["INTERNAL_SECRET"] = "test-secret"
+os.environ["INTERNAL_SECRET"] = "test-secret-minimal-32-karakter-xx"
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
@@ -16,4 +16,4 @@ def client():
 
 @pytest.fixture()
 def auth():
-    return {"X-Internal-Secret": "test-secret"}
+    return {"X-Internal-Secret": os.environ["INTERNAL_SECRET"]}
