@@ -1,7 +1,9 @@
 """Uji pertanyaan jebakan MooBot ke server yang sedang jalan.
 
 Pakai (dari root repo):
-  python scripts/check_prompts.py http://localhost:8000 NILAI_INTERNAL_SECRET
+  python -m scripts.check_prompts http://localhost:8000
+Secret dibaca dari env var INTERNAL_SECRET (atau file .env), bukan dari argumen,
+supaya tidak tersimpan di riwayat terminal.
 """
 import json
 import pathlib
@@ -9,7 +11,9 @@ import sys
 import time
 import urllib.request
 
-base, secret = sys.argv[1].rstrip("/"), sys.argv[2]
+from app.config import settings
+
+base, secret = sys.argv[1].rstrip("/"), settings.internal_secret
 CONTEXT = (pathlib.Path(__file__).parent / "context.example.txt").read_text(encoding="utf-8")
 
 CASES = [
