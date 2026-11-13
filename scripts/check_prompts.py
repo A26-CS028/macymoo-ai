@@ -6,6 +6,7 @@ Pakai (dari root repo):
 import json
 import pathlib
 import sys
+import time
 import urllib.request
 
 base, secret = sys.argv[1].rstrip("/"), sys.argv[2]
@@ -27,13 +28,14 @@ CASES = [
 
 for q, expected in CASES:
     req = urllib.request.Request(
-        f"{base}/moobot/chat",
-        data=json.dumps({"question": q, "context": CONTEXT}).encode(),
+        f"{base}/v1/moobot/chat",
+        data=json.dumps({"message": q, "context": CONTEXT}).encode(),
         headers={"Content-Type": "application/json", "X-Internal-Secret": secret},
     )
+    t0 = time.monotonic()
     try:
-        with urllib.request.urlopen(req, timeout=60) as r:
-            ans = json.loads(r.read())["answer"]
+        with urllib.request.urlopen(req, timeout=30) as r:
+            ans = json.loads(r.read())["reply"]
     except Exception as e:
         ans = f"[ERROR] {e}"
-    print(f"Q: {q}\n  harapan: {expected}\n  jawab  : {ans}\n")
+    print(f"Q: {q}\n  harapan: {expected}\n  jawab  : {ans}\n  waktu  : {time.monotonic() - t0:.1f}s\n")
