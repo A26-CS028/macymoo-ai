@@ -46,7 +46,29 @@ Belum diuji: jawaban MooBot dengan secret asli dan endpoint MooLabel (router akt
 
 ## Evaluasi
 
-(diisi nanti: F1-macro dan F1 per label; lihat `training/reports/metrics_v1.json`)
+MooLabel v1, dari `training/reports/metrics_v1.json`. Data `moolabel_v1.csv`: 316 catatan train, 161 test, template train dan test berbeda. Fitur TF-IDF kata (1,2) + char_wb (2,5) setelah `preprocess.clean` (`prep-v1`). `C` dan `class_weight` dipilih dengan GroupKFold 5 fold per `template_id` di data train. Label diberikan bila skor > 0,5.
+
+| Model | C | class_weight | F1-macro CV train | F1-macro test |
+|---|---|---|---|---|
+| Logistic Regression | 100 | balanced | 0,5592 | **0,5726** |
+| Linear SVM | 10 | balanced | 0,5619 | 0,5007 |
+
+F1 per label (test):
+
+| Label | LR | SVM |
+|---|---|---|
+| saus_terpisah | 0,3333 | 0,0000 |
+| alergi | 1,0000 | 1,0000 |
+| kurangi_bahan | 0,5200 | 0,4314 |
+| tambah_bahan | 0,7429 | 0,7429 |
+| kemasan | 0,0000 | 0,0000 |
+| alat_makan | 0,4118 | 0,2581 |
+| waktu_antar | 0,7429 | 0,7429 |
+| titip_antar | 0,8302 | 0,8302 |
+
+Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`).
+
+`kemasan`, `saus_terpisah`, dan `alat_makan` masih lemah karena gaya kalimat di template test tidak muncul di template train. Dataset v2 dari tim DS menambah template untuk ketiga label ini; model dilatih ulang setelah data uji v2 dibekukan.
 
 ## Keterbatasan
 
