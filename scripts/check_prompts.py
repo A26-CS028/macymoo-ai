@@ -13,6 +13,9 @@ import urllib.request
 
 from app.config import settings
 
+if len(sys.argv) != 2:
+    sys.exit("Pakai: python -m scripts.check_prompts <url_server>")
+
 base, secret = sys.argv[1].rstrip("/"), settings.internal_secret
 CONTEXT = (pathlib.Path(__file__).parent / "context.example.txt").read_text(encoding="utf-8")
 

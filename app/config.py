@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -18,8 +20,8 @@ class Settings(BaseSettings):
 
     # Ruang token output. Dibuat longgar supaya mode thinking tidak menghabiskannya.
     gemini_max_output_tokens: int = 1024
-    # Opsional: minimal | low | medium | high. Kosong = pakai bawaan model.
-    gemini_thinking_level: str = ""
+    # Kosong = pakai bawaan model. Nilai salah ditolak saat start.
+    gemini_thinking_level: Literal["", "minimal", "low", "medium", "high"] = ""
 
 
 settings = Settings()
