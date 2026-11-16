@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from functools import lru_cache
 
 from google import genai
 from google.genai import types
@@ -13,6 +14,11 @@ logger = logging.getLogger("uvicorn.error")
 
 class GeminiUnavailable(Exception):
     """Semua model gagal, kehabisan waktu, atau menjawab kosong."""
+
+
+@lru_cache(maxsize=1)
+def _client() -> genai.Client:
+    return genai.Client(api_key=settings.gemini_api_key)
 
 
 def _build_config(context: str) -> types.GenerateContentConfig:
@@ -34,7 +40,7 @@ async def ask_gemini(message: str, context: str) -> str:
     Urutan: model utama (maks. moobot_primary_timeout), lalu model cadangan
     dengan sisa waktu. Jawaban kosong dianggap gagal dan lanjut ke model berikutnya.
     """
-    client = genai.Client(api_key=settings.gemini_api_key)
+    client = _client()
     models = [m for m in (settings.gemini_model, settings.gemini_fallback_model) if m]
     config = _build_config(context)
     deadline = time.monotonic() + settings.moobot_total_timeout

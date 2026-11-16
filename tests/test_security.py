@@ -63,3 +63,13 @@ def test_secret_pendek_ditolak_saat_start():
 
     with pytest.raises(ValidationError):
         Settings(internal_secret="terlalu-pendek")
+
+
+def test_thinking_level_salah_ditolak_saat_start():
+    import pytest
+    from pydantic import ValidationError
+
+    from app.config import Settings
+
+    with pytest.raises(ValidationError):
+        Settings(internal_secret="x" * 32, gemini_thinking_level="lo")

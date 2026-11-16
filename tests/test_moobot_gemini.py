@@ -33,6 +33,9 @@ def atur(monkeypatch):
     monkeypatch.setattr(settings, "gemini_fallback_model", "cadangan")
     monkeypatch.setattr(settings, "moobot_total_timeout", 1.0)
     monkeypatch.setattr(settings, "moobot_primary_timeout", 0.3)
+    gemini._client.cache_clear()
+    yield
+    gemini._client.cache_clear()
 
 
 def pasang(monkeypatch, behaviors):
@@ -129,3 +132,8 @@ def test_thinking_level_dipasang_bila_diisi(monkeypatch):
 
 def test_token_output_longgar():
     assert gemini._build_config("ctx").max_output_tokens >= 1024
+
+
+def test_client_dipakai_ulang(monkeypatch):
+    pasang(monkeypatch, {"utama": ok("a"), "cadangan": ok("b")})
+    assert gemini._client() is gemini._client()
