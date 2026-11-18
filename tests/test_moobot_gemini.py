@@ -29,6 +29,7 @@ def fake_client(behaviors):
 
 @pytest.fixture(autouse=True)
 def atur(monkeypatch):
+    monkeypatch.setattr(settings, "gemini_api_key", "kunci-uji")
     monkeypatch.setattr(settings, "gemini_model", "utama")
     monkeypatch.setattr(settings, "gemini_fallback_model", "cadangan")
     monkeypatch.setattr(settings, "moobot_total_timeout", 1.0)
@@ -137,3 +138,9 @@ def test_token_output_longgar():
 def test_client_dipakai_ulang(monkeypatch):
     pasang(monkeypatch, {"utama": ok("a"), "cadangan": ok("b")})
     assert gemini._client() is gemini._client()
+
+
+def test_api_key_kosong_dianggap_tidak_tersedia(monkeypatch):
+    monkeypatch.setattr(settings, "gemini_api_key", "")
+    with pytest.raises(GeminiUnavailable):
+        asyncio.run(ask_gemini("halo", "konteks"))
