@@ -32,8 +32,8 @@ def test_chat_secret_benar_sesuai_kontrak(client, auth, monkeypatch):
     assert r.status_code == 200 and r.json() == {"reply": "Rp35.000"}
 
 
-def test_nama_field_lama_ditolak(client, auth):
-    r = client.post(URL, json={"question": "x", "context": "y"}, headers=auth)
+def test_message_wajib(client, auth):
+    r = client.post(URL, json={"context": "y"}, headers=auth)
     assert r.status_code == 422
 
 
