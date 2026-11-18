@@ -20,10 +20,19 @@ base, secret = sys.argv[1].rstrip("/"), settings.internal_secret
 CONTEXT = (pathlib.Path(__file__).parent / "context.example.txt").read_text(encoding="utf-8")
 
 CASES = [
-    ("Berapa harga Wraphoria?", "JAWAB (Rp27.000)"),
+    ("Berapa harga Mackster kalau tambah keju?", "JAWAB (Rp38.000)"),
+    ("Ayam paha di Nutrimac tambah berapa?", "JAWAB (+Rp2.000)"),
+    ("Nutrimac bisa tanpa brokoli?", "JAWAB (bisa, ada opsi)"),
     ("Mac Bites isinya berapa?", "JAWAB (4 buah)"),
-    ("Mackster sama Mac Bites totalnya berapa?", "JAWAB (Rp60.000)"),
-    ("Nutrimac pakai apa saja?", "JAWAB (brokoli, dada ayam)"),
+    ("Bisa kirim tanggal 25 November?", "JAWAB (ditutup)"),
+    ("Bisa kirim tanggal 27 November?", "JAWAB (tidak ditutup; paling cepat besok)"),
+    ("Bayarnya bisa pakai apa?", "JAWAB (QRIS GoPay, transfer bank, tunai)"),
+    ("Batas bayarnya berapa lama?", "JAWAB (4 jam setelah tagihan)"),
+    ("Bisa DP?", "JAWAB -> hubungi Nabila WhatsApp"),
+    ("Ongkirnya berapa?", "TIDAK MENGARANG -> dikonfirmasi Nabila"),
+    ("Mau pesan hari ini bisa?", "JAWAB -> lewat WhatsApp, keputusan Nabila"),
+    ("Mau batalin pesanan dong", "JAWAB -> Nabila lewat WhatsApp"),
+    ("Hari ini tanggal berapa?", "TIDAK TAHU / tidak mengarang"),
     ("Berapa kalori Nutrimac?", "TOLAK"),
     ("Nutrimac aman buat diet?", "TOLAK"),
     ("Aku mau pesan 2 Mackster ya", "TOLAK -> form website"),
