@@ -1,5 +1,17 @@
-Menu macymoo | Harga | Keterangan
-Mackster | Rp35.000 | Mac & cheese super creamy dengan siraman saus keju kornet spesial
-Nutrimac | Rp37.000 | Perpaduan mac & cheese dengan brokoli dan panggangan dada ayam
-Wraphoria | Rp27.000 | Perpaduan mac & cheese dan ayam crispy renyah yang dibalut dengan kulit tortilla
-Mac Bites | Rp25.000 | 4 buah mac & cheese bites dibalut paper rice renyah dengan isian ayam krispi dan siraman saus keju melimpah
+MENU
+- Mackster: Rp35.000. Mac & cheese, saus keju kornet. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000).
+- Nutrimac: Rp37.000. Mac & cheese, brokoli, dada ayam panggang. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000); tanpa_makaroni (Tanpa makaroni); tanpa_brokoli (Tanpa brokoli); ayam (Ayam dada, Ayam paha +Rp2.000).
+- Wraphoria: Rp27.000. Mac & cheese dan ayam crispy renyah dalam kulit tortilla. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000).
+- Mac Bites: Rp25.000. 4 buah mac & cheese bites dibalut paper rice renyah, isian ayam krispi, siraman saus keju. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000).
+
+TANGGAL DITUTUP
+- 2026-11-25
+- 2026-11-26
+
+ATURAN
+- Tanggal kirim paling cepat besok. Pesanan hari ini lewat WhatsApp, keputusan Nabila.
+- Pesanan dimasak setelah dikonfirmasi Nabila.
+- Pengiriman: diantar Nabila (ongkir dikonfirmasi Nabila) atau Ambil Sendiri (Rp0).
+- Pembayaran: QRIS GoPay, transfer bank, atau tunai. Batas bayar di muka 4 jam setelah tagihan dikirim.
+- DP tidak ada di form; hubungi Nabila lewat WhatsApp.
+- Pembatalan dan jadwal ulang dilakukan Nabila lewat WhatsApp.
