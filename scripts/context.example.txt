@@ -1,8 +1,8 @@
 MENU
 - Mackster: Rp35.000. Mac & cheese, saus keju kornet. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000).
 - Nutrimac: Rp37.000. Mac & cheese, brokoli, dada ayam panggang. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000); tanpa_makaroni (Tanpa makaroni); tanpa_brokoli (Tanpa brokoli); ayam (Ayam dada, Ayam paha +Rp2.000).
-- Wraphoria: Rp27.000. Mac & cheese dan ayam crispy renyah dalam kulit tortilla. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000).
-- Mac Bites: Rp25.000. 4 buah mac & cheese bites dibalut paper rice renyah, isian ayam krispi, siraman saus keju. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000).
+- Wraphoria: Rp27.000. Mac & cheese dan ayam krispi dalam tortila. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000); ayam (Ayam dada, Ayam paha +Rp2.000).
+- Mac Bites: Rp25.000. 4 bites berbalut paper rice, isian ayam krispi, saus keju. Opsi: pedas (Light, Medium, Spicy); keju (Tambah keju +Rp3.000); ayam (Ayam dada, Ayam paha +Rp2.000).
 
 TANGGAL DITUTUP
 - 2026-11-25
