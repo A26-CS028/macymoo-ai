@@ -82,11 +82,12 @@ for name, model in models.items():
     pipes[name] = pipe
     print(name, "C =", hasil[name]["C"], "| F1-macro test =", hasil[name]["f1_macro_test"])
 
-# pilih F1-macro test tertinggi, kalau sama pilih logreg
-if hasil["linsvm"]["f1_macro_test"] > hasil["logreg"]["f1_macro_test"]:
-    best = "linsvm"
-else:
-    best = "logreg"
+# Data test hanya untuk laporan; memilih model dari test membuat skornya terlalu optimis.
+# Selisih CV di bawah BATAS_SERI dianggap seri, lalu logreg dipilih karena predict_proba
+# memberi skor yang bisa dibaca di respons API (KF 9.6).
+BATAS_SERI = 0.01
+selisih_cv = hasil["linsvm"]["f1_macro_cv_train"] - hasil["logreg"]["f1_macro_cv_train"]
+best = "linsvm" if selisih_cv > BATAS_SERI else "logreg"
 model_version = best + "-v1"
 print("model terpilih:", model_version)
 

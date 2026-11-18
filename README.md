@@ -50,7 +50,7 @@ MooLabel v1, dari `training/reports/metrics_v1.json`. Data `moolabel_v1.csv`: 31
 
 | Model | C | class_weight | F1-macro CV train | F1-macro test |
 |---|---|---|---|---|
-| Logistic Regression | 100 | balanced | 0,5592 | **0,5726** |
+| Logistic Regression | 100 | balanced | 0,5592 | 0,5726 |
 | Linear SVM | 10 | balanced | 0,5619 | 0,5007 |
 
 F1 per label (test):
@@ -66,7 +66,7 @@ F1 per label (test):
 | waktu_antar | 0,7429 | 0,7429 |
 | titip_antar | 0,8302 | 0,8302 |
 
-Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`).
+Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`). Model dipilih dari F1-macro CV train, bukan dari data test, agar skor test tetap jujur. Selisih CV SVM dan LR 0,0027 (di bawah batas seri 0,01), jadi dianggap seri dan LR dipilih karena `predict_proba` memberi skor yang bisa dibaca di respons API.
 
 `kemasan`, `saus_terpisah`, dan `alat_makan` masih lemah karena gaya kalimat di template test tidak muncul di template train. Dataset v2 dari tim DS menambah template untuk ketiga label ini; model dilatih ulang setelah data uji v2 dibekukan.
 
