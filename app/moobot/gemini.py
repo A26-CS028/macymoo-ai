@@ -40,6 +40,9 @@ async def ask_gemini(message: str, context: str) -> str:
     Urutan: model utama (maks. moobot_primary_timeout), lalu model cadangan
     dengan sisa waktu. Jawaban kosong dianggap gagal dan lanjut ke model berikutnya.
     """
+    # Tanpa key, MooBot nonaktif (503) tetapi service tetap hidup untuk MooLabel (KF 15).
+    if not settings.gemini_api_key:
+        raise GeminiUnavailable()
     client = _client()
     models = [m for m in (settings.gemini_model, settings.gemini_fallback_model) if m]
     config = _build_config(context)
