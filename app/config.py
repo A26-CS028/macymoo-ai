@@ -23,5 +23,13 @@ class Settings(BaseSettings):
     # Kosong = pakai bawaan model. Nilai salah ditolak saat start.
     gemini_thinking_level: Literal["", "minimal", "low", "medium", "high"] = ""
 
+    # RAG MooBot: FAQ terkait yang ditempel ke prompt
+    rag_top_k: int = 3
+    rag_min_skor_tfidf: float = 0.43  # dipilih scripts.eval_rag
+    rag_min_skor_embed: float = 0.72  # dipilih scripts.eval_rag --embed
+    # model embedding harus sama dengan yang dipakai saat build data/faq_vectors.json
+    gemini_embed_model: str = "gemini-embedding-001"
+    moobot_embed_timeout: float = 1.5
+
 
 settings = Settings()

@@ -2,6 +2,8 @@ import os
 
 # Harus diatur sebelum app diimpor, karena Settings dibaca saat import.
 os.environ["INTERNAL_SECRET"] = "test-secret-minimal-32-karakter-xx"
+# Kosongkan key dari .env lokal supaya tes tidak pernah memanggil Gemini sungguhan.
+os.environ["GEMINI_API_KEY"] = ""
 
 import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402

@@ -45,7 +45,7 @@
     "id": "F07",
     "kategori": "Opsi",
     "pertanyaan": "Bisa tambah keju?",
-    "jawaban": "Bisa, untuk semua menu, tambah Rp3.000.",
+    "jawaban": "Bisa, untuk semua menu. Tambahan harganya: {menu}.",
     "sumber": "7"
   },
   {

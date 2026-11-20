@@ -1,11 +1,9 @@
 """data/faq_seed.json harus sama dengan tabel KF 9.7."""
 import json
 import pathlib
-import re
 
 ROOT = pathlib.Path(__file__).parent.parent
 FAQ = json.loads((ROOT / "data" / "faq_seed.json").read_text(encoding="utf-8"))
-CONTEXT = (ROOT / "scripts" / "context.example.txt").read_text(encoding="utf-8")
 KATEGORI = {"Menu", "Cara pesan", "Opsi", "Pengiriman", "Pembayaran", "Status", "Ubah, batal"}
 
 
@@ -23,12 +21,15 @@ def test_field_lengkap_dan_tidak_kosong():
 def test_harga_menu_lewat_placeholder():
     # KF 9.7: harga menu diambil dari database lewat {menu} agar tetap benar saat Nabila mengubahnya.
     assert "{menu}" in FAQ[0]["jawaban"] and "{menu}" in FAQ[1]["jawaban"]
-    for e in FAQ:
-        nominal = re.findall(r"Rp\d+(?:\.\d{3})*", e["jawaban"])
-        if e["id"] == "F07":  # tambah keju Rp3.000 adalah aturan tetap di KF 7
-            assert nominal == ["Rp3.000"] and "Rp3.000" in CONTEXT
-        else:
-            assert nominal == [], e["id"]
+
+
+def test_tidak_ada_harga_di_jawaban():
+    assert not [e["id"] for e in FAQ if "Rp" in e["jawaban"]]
+
+
+def test_f07_harga_dari_menu():
+    f07 = next(e for e in FAQ if e["id"] == "F07")
+    assert "{menu}" in f07["jawaban"] and "semua menu" in f07["jawaban"]
 
 
 def test_opsi_pedas_dan_keju_untuk_semua_menu():
