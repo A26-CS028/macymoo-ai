@@ -70,7 +70,39 @@ Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`). Model dipilih dari F1
 
 `kemasan`, `saus_terpisah`, dan `alat_makan` masih lemah karena gaya kalimat di template test tidak muncul di template train. Dataset v2 dari tim DS menambah template untuk ketiga label ini; model dilatih ulang setelah data uji v2 dibekukan.
 
+## Cakupan RAG MooBot
+
+MooBot tidak memakai vector store. Retrieval dilakukan Express: setiap request
+ke `POST /v1/moobot/chat` membawa `context` (menu, tanggal ditutup, aturan)
+yang disusun dari database. Gemini hanya boleh menjawab dari `context` itu.
+
+`data/faq_seed.json` berisi 18 FAQ yang diturunkan dari format `context`
+yang sama, dipakai sebagai basis pengetahuan awal dan bahan uji. Angka dan
+aturan di sana tidak boleh bertentangan dengan `context`; bila berbeda,
+`context` yang dipakai.
+
+Perilaku MooBot diuji dengan 30 pertanyaan di `scripts/prompt_cases.py`,
+termasuk 16 kasus yang harus ditolak (kalori dan klaim kesehatan, pesan atau
+cek status lewat chat, prompt injection, dan 10 pertanyaan di luar konteks).
+Jalankan `python -m scripts.check_prompts http://localhost:8000` dengan server
+menyala.
+
 ## Keterbatasan
+**MooLabel**
+- F1-macro test v1 baru 0,5726 (LR). `kemasan` (0,0000), `saus_terpisah`
+  (0,3333), dan `alat_makan` (0,4118) masih lemah karena gaya kalimat di
+  template test tidak muncul di template train.
+- Data v1 terbatas: 477 catatan dari template, dengan template train dan
+  test berbeda.
+- Ambang label tetap 0,5 untuk semua label.
+
+**MooBot**
+- Jawaban hanya dari `context`; hal di luar itu (mis. ongkir, DP, pembatalan)
+  diarahkan ke Nabila lewat WhatsApp.
+- Tidak tahu tanggal hari ini kecuali dikirim di `context`.
+- Bergantung pada Gemini API: model utama kadang lambat atau sibuk. Ada model
+  cadangan dan anggaran total 10 detik; bila semuanya gagal, balasan 503 dan
+  pesanan tetap tersimpan. Nama model diatur lewat environment variable.
 
 (diisi nanti)
 
@@ -81,7 +113,7 @@ Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`). Model dipilih dari F1
 | `app/` | FastAPI: `moolabel/` dan `moobot/` |
 | `models/` | Model terlatih dan metadatanya |
 | `training/` | Pelatihan dan evaluasi (tidak ikut deploy) |
-| `data/` | Dataset salinan dari macymoo-ds |
+| `data/` | Dataset salinan dari macymoo-ds; `faq_seed.json` untuk MooBot |
 | `tests/` | Pengujian |
 
 ## Repo terkait
