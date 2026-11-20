@@ -1,128 +1,128 @@
 [
   {
-    "id": "faq-01",
-    "kategori": "pemesanan",
-    "pertanyaan": "Bisa pesan untuk hari ini?",
-    "jawaban": "Tanggal kirim paling cepat besok. Pesanan untuk hari ini dilakukan lewat WhatsApp dan keputusannya ada di Nabila.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-02",
-    "kategori": "pemesanan",
-    "pertanyaan": "Paling cepat dikirim kapan?",
-    "jawaban": "Tanggal kirim paling cepat besok.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-03",
-    "kategori": "pemesanan",
-    "pertanyaan": "Apakah ada tanggal yang tidak bisa dipakai untuk pengiriman?",
-    "jawaban": "Ada beberapa tanggal yang ditutup dan tidak bisa dipilih untuk pengiriman. Tanggal yang ditutup mengikuti jadwal terbaru dari toko.",
-    "sumber": "TANGGAL DITUTUP"
-  },
-  {
-    "id": "faq-04",
-    "kategori": "pemesanan",
-    "pertanyaan": "Kapan pesananku mulai dimasak?",
-    "jawaban": "Pesanan dimasak setelah dikonfirmasi Nabila.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-05",
-    "kategori": "pengiriman",
-    "pertanyaan": "Pengirimannya bagaimana?",
-    "jawaban": "Ada dua pilihan: diantar Nabila (ongkir dikonfirmasi Nabila) atau Ambil Sendiri (Rp0).",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-06",
-    "kategori": "pengiriman",
-    "pertanyaan": "Ongkirnya berapa?",
-    "jawaban": "Untuk pesanan yang diantar, ongkir dikonfirmasi Nabila.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-07",
-    "kategori": "pengiriman",
-    "pertanyaan": "Boleh ambil sendiri?",
-    "jawaban": "Boleh. Pilihan Ambil Sendiri tidak ada biaya (Rp0).",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-08",
-    "kategori": "pembayaran",
-    "pertanyaan": "Bayarnya bisa pakai apa?",
-    "jawaban": "Pembayaran bisa lewat QRIS GoPay, transfer bank, atau tunai.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-09",
-    "kategori": "pembayaran",
-    "pertanyaan": "Batas waktu bayarnya berapa lama?",
-    "jawaban": "Pembayaran di muka paling lambat 4 jam setelah tagihan dikirim.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-10",
-    "kategori": "pembayaran",
-    "pertanyaan": "Bisa bayar DP?",
-    "jawaban": "DP tidak ada di form pemesanan. Silakan hubungi Nabila lewat WhatsApp.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-11",
-    "kategori": "perubahan",
-    "pertanyaan": "Bagaimana cara membatalkan pesanan?",
-    "jawaban": "Pembatalan dilakukan Nabila lewat WhatsApp. MooBot tidak bisa membatalkan pesanan lewat chat.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-12",
-    "kategori": "perubahan",
-    "pertanyaan": "Bisa jadwal ulang pengiriman?",
-    "jawaban": "Jadwal ulang dilakukan Nabila lewat WhatsApp.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-13",
-    "kategori": "pemesanan",
-    "pertanyaan": "Bisa pesan lewat chat MooBot?",
-    "jawaban": "MooBot tidak menerima pesanan lewat chat. Silakan isi form pemesanan di website. Untuk pesanan hari ini, hubungi Nabila lewat WhatsApp.",
-    "sumber": "ATURAN"
-  },
-  {
-    "id": "faq-14",
-    "kategori": "pemesanan",
-    "pertanyaan": "Bagaimana cara cek status pesanan?",
-    "jawaban": "Cek di halaman status pesanan dengan memasukkan kode pesanan. MooBot tidak bisa mengecek status pesanan lewat chat.",
-    "sumber": "ALUR"
-  },
-  {
-    "id": "faq-15",
-    "kategori": "menu",
+    "id": "F01",
+    "kategori": "Menu",
     "pertanyaan": "Menu apa saja yang ada?",
-    "jawaban": "Menu macymoo: Mackster, Nutrimac, Wraphoria, dan Mac Bites. Harga dan keterangan lengkap ada di daftar menu.",
-    "sumber": "MENU"
+    "jawaban": "Ada 4 menu: Mackster, Nutrimac, Wraphoria, dan Mac Bites. Isi dan harganya: {menu}.",
+    "sumber": "3"
   },
   {
-    "id": "faq-16",
-    "kategori": "menu",
-    "pertanyaan": "Pilihan pedasnya apa saja?",
-    "jawaban": "Mackster dan Nutrimac punya opsi pedas: Light, Medium, atau Spicy.",
-    "sumber": "MENU"
+    "id": "F02",
+    "kategori": "Menu",
+    "pertanyaan": "Berapa harganya?",
+    "jawaban": "Harga per menu: {menu}. Total akhir (termasuk ongkir bila diantar) muncul setelah pesanan dikonfirmasi Nabila.",
+    "sumber": "3, 4"
   },
   {
-    "id": "faq-17",
-    "kategori": "menu",
+    "id": "F03",
+    "kategori": "Cara pesan",
+    "pertanyaan": "Bagaimana cara pesan?",
+    "jawaban": "Isi form di web: pilih menu dan opsi, tulis catatan, pilih tanggal kirim dan cara antar. Setelah kirim, kamu dapat kode pesanan dan link status. Pesanan dimasak setelah dikonfirmasi Nabila.",
+    "sumber": "4"
+  },
+  {
+    "id": "F04",
+    "kategori": "Cara pesan",
+    "pertanyaan": "Bisa pesan untuk hari ini?",
+    "jawaban": "Lewat form, tanggal kirim paling cepat besok. Untuk hari ini, hubungi Nabila lewat WhatsApp; bisa atau tidaknya diputuskan Nabila.",
+    "sumber": "6"
+  },
+  {
+    "id": "F05",
+    "kategori": "Cara pesan",
+    "pertanyaan": "Kenapa tanggal tertentu tidak bisa dipilih?",
+    "jawaban": "Tanggal itu sedang ditutup oleh Nabila. Silakan pilih tanggal lain.",
+    "sumber": "6"
+  },
+  {
+    "id": "F06",
+    "kategori": "Opsi",
+    "pertanyaan": "Ada pilihan tingkat pedas?",
+    "jawaban": "Ada: light, medium, dan spicy, untuk semua menu.",
+    "sumber": "7"
+  },
+  {
+    "id": "F07",
+    "kategori": "Opsi",
     "pertanyaan": "Bisa tambah keju?",
-    "jawaban": "Mackster dan Nutrimac bisa ditambah keju dengan tambahan Rp3.000.",
-    "sumber": "MENU"
+    "jawaban": "Bisa, untuk semua menu, tambah Rp3.000.",
+    "sumber": "7"
   },
   {
-    "id": "faq-18",
-    "kategori": "menu",
-    "pertanyaan": "Opsi apa saja yang ada di Nutrimac?",
-    "jawaban": "Nutrimac punya opsi tanpa makaroni, tanpa brokoli, dan pilihan ayam: ayam dada atau ayam paha (+Rp2.000).",
-    "sumber": "MENU"
+    "id": "F08",
+    "kategori": "Opsi",
+    "pertanyaan": "Ayamnya bisa pilih paha atau dada?",
+    "jawaban": "Bisa untuk Nutrimac, Wraphoria, dan Mac Bites. Harga paha dan dada berbeda mengikuti harga pasar; harga terkini tampil di form.",
+    "sumber": "7"
+  },
+  {
+    "id": "F09",
+    "kategori": "Opsi",
+    "pertanyaan": "Nutrimac bisa tanpa brokoli atau tanpa makaroni?",
+    "jawaban": "Bisa, pilih opsinya di form.",
+    "sumber": "7"
+  },
+  {
+    "id": "F10",
+    "kategori": "Opsi",
+    "pertanyaan": "Ada ukuran kecil atau paket bundling?",
+    "jawaban": "Di form web hanya ada 4 menu tanpa pilihan ukuran. Untuk paket atau pesanan khusus, hubungi Nabila lewat WhatsApp.",
+    "sumber": "6"
+  },
+  {
+    "id": "F11",
+    "kategori": "Pengiriman",
+    "pertanyaan": "Bisa diantar?",
+    "jawaban": "Bisa diantar Nabila (ongkir dikonfirmasi Nabila), atau Ambil Sendiri tanpa ongkir. Saat Ambil Sendiri, kamu juga boleh memesan GoSend sendiri.",
+    "sumber": "3, 4"
+  },
+  {
+    "id": "F12",
+    "kategori": "Pembayaran",
+    "pertanyaan": "Bayarnya pakai apa?",
+    "jawaban": "QRIS GoPay, transfer bank, atau tunai. QRIS dan rekening tampil di halaman tagihan.",
+    "sumber": "8"
+  },
+  {
+    "id": "F13",
+    "kategori": "Pembayaran",
+    "pertanyaan": "Kapan harus bayar?",
+    "jawaban": "Tagihan dikirim setelah pesanan dikonfirmasi. Untuk bayar di muka, batasnya 4 jam setelah tagihan dikirim.",
+    "sumber": "4, 6"
+  },
+  {
+    "id": "F14",
+    "kategori": "Pembayaran",
+    "pertanyaan": "Bisa DP?",
+    "jawaban": "DP tidak bisa dipilih di form. Silakan bicarakan dengan Nabila lewat WhatsApp.",
+    "sumber": "6"
+  },
+  {
+    "id": "F15",
+    "kategori": "Pembayaran",
+    "pertanyaan": "Sudah transfer, lalu apa?",
+    "jawaban": "Kirim bukti transfer ke Nabila lewat WhatsApp. Nabila mengecek pembayaran lalu memperbarui status di link status.",
+    "sumber": "8"
+  },
+  {
+    "id": "F16",
+    "kategori": "Status",
+    "pertanyaan": "Bagaimana cek pesanan saya?",
+    "jawaban": "Buka link status yang kamu dapat setelah mengisi form. MooBot tidak bisa melihat data pesanan.",
+    "sumber": "4, 9.4"
+  },
+  {
+    "id": "F17",
+    "kategori": "Ubah, batal",
+    "pertanyaan": "Bisa ubah atau batalkan pesanan?",
+    "jawaban": "Hubungi Nabila lewat WhatsApp. Pembatalan dilakukan Nabila; jika sudah bayar, uang dikembalikan lewat transfer.",
+    "sumber": "5, 8"
+  },
+  {
+    "id": "F18",
+    "kategori": "Ubah, batal",
+    "pertanyaan": "Kalau tanggal kirim saya diundur?",
+    "jawaban": "Nabila akan mengabari tanggal baru lewat WhatsApp. Jika kamu tidak setuju, pesanan dibatalkan dan uang dikembalikan bila sudah bayar.",
+    "sumber": "6"
   }
 ]
