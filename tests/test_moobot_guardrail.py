@@ -42,3 +42,27 @@ def test_contoh_context_punya_tiga_judul_tetap():
     teks = CONTEXT_EXAMPLE.read_text(encoding="utf-8")
     for judul in ("MENU", "TANGGAL DITUTUP", "ATURAN"):
         assert f"\n{judul}\n" in f"\n{teks}"
+
+
+def _faq(i):
+    from app.moobot.rag import get_index
+
+    return next(f for f in get_index().faqs if f.id == i)
+
+
+def test_prompt_tanpa_faq_sama_seperti_dulu():
+    ctx = CONTEXT_EXAMPLE.read_text(encoding="utf-8")
+    assert build_system_prompt(ctx) == build_system_prompt(ctx, [])
+    # aturan di prompt menyebut <faq>; yang dicek di sini blok FAQ-nya
+    assert "</faq>" not in build_system_prompt(ctx)
+
+
+def test_prompt_dengan_faq():
+    p = build_system_prompt("MENU\n- Mackster: Rp35.000", [_faq("F07"), _faq("F12")])
+    assert "</faq>" in p and "F07 Bisa tambah keju?" in p and "F12" in p
+    assert "(lihat MENU di konteks)" in p and "{menu}" not in p
+    assert p.rindex("</konteks>") < p.rindex("<faq>")
+
+
+def test_prompt_aturan_konteks_menang():
+    assert "<konteks> yang benar" in MOOBOT_SYSTEM_PROMPT

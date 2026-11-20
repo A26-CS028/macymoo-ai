@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from collections.abc import Sequence
 from functools import lru_cache
 
 from google import genai
@@ -21,9 +22,9 @@ def _client() -> genai.Client:
     return genai.Client(api_key=settings.gemini_api_key)
 
 
-def _build_config(context: str) -> types.GenerateContentConfig:
+def _build_config(context: str, faq: Sequence = ()) -> types.GenerateContentConfig:
     kwargs = dict(
-        system_instruction=build_system_prompt(context),
+        system_instruction=build_system_prompt(context, faq),
         temperature=0.2,
         max_output_tokens=settings.gemini_max_output_tokens,
     )
@@ -34,19 +35,23 @@ def _build_config(context: str) -> types.GenerateContentConfig:
     return types.GenerateContentConfig(**kwargs)
 
 
-async def ask_gemini(message: str, context: str) -> str:
+async def ask_gemini(
+    message: str, context: str, faq: Sequence = (), deadline: float | None = None
+) -> str:
     """Tanya Gemini dalam satu anggaran waktu total.
 
     Urutan: model utama (maks. moobot_primary_timeout), lalu model cadangan
     dengan sisa waktu. Jawaban kosong dianggap gagal dan lanjut ke model berikutnya.
+    `deadline` dari router sudah dipotong waktu pencarian FAQ.
     """
     # Tanpa key, MooBot nonaktif (503) tetapi service tetap hidup untuk MooLabel (KF 15).
     if not settings.gemini_api_key:
         raise GeminiUnavailable()
     client = _client()
     models = [m for m in (settings.gemini_model, settings.gemini_fallback_model) if m]
-    config = _build_config(context)
-    deadline = time.monotonic() + settings.moobot_total_timeout
+    config = _build_config(context, faq)
+    if deadline is None:
+        deadline = time.monotonic() + settings.moobot_total_timeout
 
     for i, model in enumerate(models):
         remaining = deadline - time.monotonic()

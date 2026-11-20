@@ -24,7 +24,7 @@ def test_chat_secret_salah_ditolak(client):
 
 
 def test_chat_secret_benar_sesuai_kontrak(client, auth, monkeypatch):
-    async def fake(message, context):
+    async def fake(message, context, *args):
         return "Rp35.000"
 
     monkeypatch.setattr(moobot_router, "ask_gemini", fake)
@@ -38,7 +38,7 @@ def test_message_wajib(client, auth):
 
 
 def test_gemini_gagal_balas_503(client, auth, monkeypatch):
-    async def boom(message, context):
+    async def boom(message, context, *args):
         raise GeminiUnavailable()
 
     monkeypatch.setattr(moobot_router, "ask_gemini", boom)

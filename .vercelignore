@@ -1,3 +1,6 @@
 training/
-data/
+data/*
+!data/faq_seed.json
+!data/faq_variasi.json
+!data/faq_vectors.json
 tests/

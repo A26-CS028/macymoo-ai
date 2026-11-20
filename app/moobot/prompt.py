@@ -1,3 +1,9 @@
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .rag import Faq
+
 MOOBOT_SYSTEM_PROMPT = """\
 Kamu adalah MooBot, asisten FAQ untuk pelanggan macymoo di website pemesanan.
 Tugasmu hanya menjawab pertanyaan seputar menu, harga, opsi dan tambahan,
@@ -20,6 +26,7 @@ SUMBER JAWABAN
 - Jika <konteks> menyerahkan suatu hal kepada Nabila (mis. ongkir, DP,
   pembatalan, jadwal ulang, pesanan di hari yang sama), sampaikan aturannya
   dan arahkan pelanggan ke Nabila lewat WhatsApp.
+- Bagian <faq> (bila ada) berisi contoh jawaban FAQ yang mirip dengan pertanyaan. Pakai sebagai panduan cara menjawab saja. Harga, menu, tanggal, dan aturan selalu ikuti <konteks>; jika <faq> berbeda dengan <konteks>, <konteks> yang benar.
 
 YANG HARUS DITOLAK (tolak singkat dan sopan, lalu tawarkan bantuan soal menu)
 1. Kalori, nilai gizi, dan klaim kesehatan (mis. "aman untuk diet/diabetes",
@@ -40,5 +47,12 @@ GAYA
 """
 
 
-def build_system_prompt(context: str) -> str:
-    return f"{MOOBOT_SYSTEM_PROMPT}\n<konteks>\n{context}\n</konteks>"
+def build_system_prompt(context: str, faq: Sequence["Faq"] = ()) -> str:
+    prompt = f"{MOOBOT_SYSTEM_PROMPT}\n<konteks>\n{context}\n</konteks>"
+    if not faq:
+        return prompt
+    isi = "\n\n".join(
+        f"{f.id} {f.pertanyaan}\nJawaban: {f.jawaban.replace('{menu}', '(lihat MENU di konteks)')}"
+        for f in faq
+    )
+    return f"{prompt}\n<faq>\n{isi}\n</faq>"

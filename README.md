@@ -78,15 +78,55 @@ Perbandingan pada data test yang sama (`python -m training.evaluate`, data test 
 
 Template tambahan v2 untuk `kemasan`, `saus_terpisah`, dan `alat_makan` menaikkan ketiga label itu. `kurangi_bahan` dan `waktu_antar` turun dibanding v1; data test keduanya berbeda, jadi penurunan ini perlu dicek per catatan.
 
-## Cakupan MooBot (tanpa RAG)
+## Cakupan MooBot dan RAG FAQ (side quest)
 
-MooBot tidak memakai vector store. Retrieval dilakukan Express: setiap request
-ke `POST /v1/moobot/chat` membawa `context` (menu, tanggal ditutup, aturan)
-yang disusun dari database. Gemini hanya boleh menjawab dari `context` itu.
+Setiap request ke `POST /v1/moobot/chat` membawa `context` (menu, tanggal
+ditutup, aturan) yang disusun Express dari database. Menu, harga, dan aturan
+hanya diambil dari `context` itu.
 
-`data/faq_seed.json` berisi 18 FAQ dari Keputusan Final bagian 9.7. Harga
-menu tidak ditulis di jawaban; placeholder `{menu}` diisi dari `context`.
-Seed ini belum dimasukkan ke prompt; saat ini baru dipakai sebagai bahan uji.
+Selain itu, MooBot mencari FAQ yang mirip dengan pertanyaan pelanggan
+(`app/moobot/rag.py`) dan menempelkan maksimal 3 FAQ ke prompt dalam blok
+`<faq>`. Prompt meminta Gemini memakai FAQ hanya sebagai panduan; bila FAQ
+berbeda dengan `<konteks>`, yang dipakai `<konteks>`.
+
+- **Data:** `data/faq_seed.json` berisi 18 FAQ dari Keputusan Final bagian 9.7.
+  Jawaban FAQ tidak memuat harga; placeholder `{menu}` ditulis
+  "(lihat MENU di konteks)". `data/faq_variasi.json` berisi 3–5 variasi
+  pertanyaan per FAQ (ikut diindeks) dan 10 pertanyaan di luar topik untuk
+  memilih ambang.
+- **Pencarian:** pertanyaan di-embed dengan Gemini (`GEMINI_EMBED_MODEL`,
+  768 dimensi) lalu dibandingkan dengan vektor tiap pertanyaan dan variasi
+  FAQ (cosine; skor FAQ = kalimat paling mirip). Jika embedding gagal, lewat
+  1,5 detik, atau vektor tidak cocok dengan data, pencarian memakai TF-IDF
+  kata + karakter (setelah `preprocess.clean`). Waktu pencarian dihitung di
+  dalam batas total 10 detik.
+- **Tidak ada FAQ di atas ambang:** blok `<faq>` tidak dikirim, sehingga
+  pertanyaan di luar topik tetap ditolak oleh aturan prompt.
+
+Setiap kali `faq_seed.json` atau `faq_variasi.json` diubah, buat ulang vektor
+(butuh `GEMINI_API_KEY`); tes `test_vektor_repo_cocok_dengan_data` gagal bila
+lupa:
+
+```bash
+python -m scripts.build_faq_vectors
+python -m scripts.eval_rag --embed   # tanpa --embed: TF-IDF saja, tanpa jaringan
+```
+
+Hasil `scripts.eval_rag`. Ambang dipilih dari variasi (leave-one-out) dan
+daftar di luar topik, bukan dari set uji. Set uji (`data/faq_uji_retrieval.json`):
+38 pertanyaan yang seharusnya mendapat FAQ (2 parafrase per FAQ, plus 2 kasus
+dari `prompt_cases.py`) dan 14 pertanyaan yang seharusnya tidak mendapat FAQ.
+
+| Jalur | Ambang | hit@1 | hit@3 | Tolak benar |
+|---|---|---|---|---|
+| Embedding Gemini (dipakai) | 0,72 | 97,4% | 100,0% | 85,7% |
+| TF-IDF (cadangan) | 0,43 | 73,7% | 73,7% | 100,0% |
+
+Pada jalur embedding, 2 dari 14 pertanyaan yang seharusnya tanpa FAQ masih
+mendapat F09 ("Berapa kalori Nutrimac?" dan "Nutrimac aman buat diet?").
+Uji langsung ke Gemini, masing-masing 3 kali dengan dan tanpa blok FAQ: semua
+6 jawaban dengan FAQ menolak dengan benar; tanpa FAQ 5 menolak dan 1 gagal
+dari sisi Gemini. Blok FAQ tidak membuat pertanyaan kesehatan dijawab.
 
 Perilaku MooBot diuji dengan 30 pertanyaan di `scripts/prompt_cases.py`,
 termasuk 16 kasus yang harus ditolak (kalori dan klaim kesehatan, pesan atau
@@ -110,6 +150,10 @@ menyala.
 - Bergantung pada Gemini API: model utama kadang lambat atau sibuk. Ada model
   cadangan dan anggaran total 10 detik; bila semuanya gagal, balasan 503.
   Nama model diatur lewat environment variable.
+- RAG FAQ hanya mencakup 18 FAQ. Variasi pertanyaan dan set uji dibuat tim,
+  bukan dari pertanyaan pelanggan asli, jadi hit@k di atas belum mewakili
+  pemakaian nyata. Pencarian TF-IDF berbasis kata, sehingga parafrase yang
+  kata-katanya jauh berbeda bisa tidak menemukan FAQ.
 
 ## Struktur
 
@@ -118,7 +162,7 @@ menyala.
 | `app/` | FastAPI: `moolabel/` dan `moobot/` |
 | `models/` | Model terlatih dan metadatanya |
 | `training/` | Pelatihan dan evaluasi (tidak ikut deploy) |
-| `data/` | Dataset salinan dari macymoo-ds; `faq_seed.json` untuk MooBot |
+| `data/` | Dataset salinan dari macymoo-ds; `faq_seed.json`, `faq_variasi.json`, `faq_vectors.json` untuk RAG MooBot (hanya ketiganya yang ikut deploy) dan `faq_uji_retrieval.json` untuk `eval_rag` |
 | `tests/` | Pengujian |
 
 ## Repo terkait
