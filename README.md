@@ -15,8 +15,9 @@ Dataset MooLabel dibuat di [macymoo-ds](https://github.com/A26-CS028/macymoo-ds)
 | Berkas | Versi dataset | Commit asal di macymoo-ds |
 |---|---|---|
 | `data/moolabel/moolabel_v1.csv` | v1 (477 catatan) | `23cd83b` |
+| `data/moolabel/moolabel_v2.csv` | v2 (540 catatan, data uji dibekukan 18 Nov) | `3bf5980` |
 
-Setiap kali dataset disalin ulang, perbarui baris tabel di atas (`git log -1 --format=%h -- moolabel-dataset/output/moolabel_v1.csv` di macymoo-ds).
+Setiap kali dataset disalin, tambah baris di tabel di atas (`git log -1 --format=%h -- moolabel-dataset/output/moolabel_vN.csv` di macymoo-ds) dan naikkan `VERSI` di `training/train.py`.
 
 ## Library
 
@@ -46,29 +47,36 @@ Belum diuji: jawaban MooBot dengan secret asli dan endpoint MooLabel (router akt
 
 ## Evaluasi
 
-MooLabel v1, dari `training/reports/metrics_v1.json`. Data `moolabel_v1.csv`: 316 catatan train, 161 test, template train dan test berbeda. Fitur TF-IDF kata (1,2) + char_wb (2,5) setelah `preprocess.clean` (`prep-v1`). `C` dan `class_weight` dipilih dengan GroupKFold 5 fold per `template_id` di data train. Label diberikan bila skor > 0,5.
+MooLabel v2, dari `training/reports/metrics_v2.json`. Data `moolabel_v2.csv`: 316 catatan train (62 template), 224 test (161 dari template, 63 tulisan anggota tim di luar tim AI); template train dan test berbeda. Fitur TF-IDF kata (1,2) + char_wb (2,5) setelah `preprocess.clean` (`prep-v1`). `C` dan `class_weight` dipilih dengan GroupKFold 5 fold per `template_id` di data train. Label diberikan bila skor > 0,5.
 
 | Model | C | class_weight | F1-macro CV train | F1-macro test |
 |---|---|---|---|---|
-| Logistic Regression | 100 | balanced | 0,5592 | 0,5726 |
-| Linear SVM | 10 | balanced | 0,5619 | 0,5007 |
+| Logistic Regression | 100 | balanced | 0,6518 | 0,6863 |
+| Linear SVM | 30 | - | 0,6657 | 0,6703 |
 
-F1 per label (test):
+F1 per label (test), dengan v1 (LR, data test v1) sebagai pembanding:
 
-| Label | LR | SVM |
-|---|---|---|
-| saus_terpisah | 0,3333 | 0,0000 |
-| alergi | 1,0000 | 1,0000 |
-| kurangi_bahan | 0,5200 | 0,4314 |
-| tambah_bahan | 0,7429 | 0,7429 |
-| kemasan | 0,0000 | 0,0000 |
-| alat_makan | 0,4118 | 0,2581 |
-| waktu_antar | 0,7429 | 0,7429 |
-| titip_antar | 0,8302 | 0,8302 |
+| Label | LR v2 | SVM v2 | LR v1 |
+|---|---|---|---|
+| saus_terpisah | 0,6800 | 0,6250 | 0,3333 |
+| alergi | 1,0000 | 1,0000 | 1,0000 |
+| kurangi_bahan | 0,3692 | 0,3333 | 0,5200 |
+| tambah_bahan | 0,8214 | 0,7778 | 0,7429 |
+| kemasan | 0,6222 | 0,6222 | 0,0000 |
+| alat_makan | 0,5000 | 0,4681 | 0,4118 |
+| waktu_antar | 0,6154 | 0,6500 | 0,7429 |
+| titip_antar | 0,8824 | 0,8857 | 0,8302 |
 
-Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`). Model dipilih dari F1-macro CV train, bukan dari data test, agar skor test tetap jujur. Selisih CV SVM dan LR 0,0027 (di bawah batas seri 0,01), jadi dianggap seri dan LR dipilih karena `predict_proba` memberi skor yang bisa dibaca di respons API.
+Model terpilih: `linsvm-v2` (`models/moolabel-v2.joblib`). Model dipilih dari F1-macro CV train, bukan dari data test, agar skor test tetap jujur. Selisih CV SVM dan LR 0,0139, di atas batas seri 0,01, jadi SVM dipilih walaupun F1 test LR sedikit lebih tinggi. LinearSVC tidak punya `predict_proba`; skor di respons API adalah sigmoid dari `decision_function` (sama dengan `train.py`), bukan probabilitas terkalibrasi.
 
-`kemasan`, `saus_terpisah`, dan `alat_makan` masih lemah karena gaya kalimat di template test tidak muncul di template train. Dataset v2 dari tim DS menambah template untuk ketiga label ini; model dilatih ulang setelah data uji v2 dibekukan.
+Perbandingan pada data test yang sama (`python -m training.evaluate`, data test v2):
+
+| Model | Semua (224) | Template (161) | Tulisan anggota (63) |
+|---|---|---|---|
+| `logreg-v1` | 0,6430 | 0,5500 | 0,8045 |
+| `linsvm-v2` | 0,6703 | 0,5852 | 0,8353 |
+
+Template tambahan v2 untuk `kemasan`, `saus_terpisah`, dan `alat_makan` menaikkan ketiga label itu. `kurangi_bahan` dan `waktu_antar` turun dibanding v1; data test keduanya berbeda, jadi penurunan ini perlu dicek per catatan.
 
 ## Cakupan MooBot (tanpa RAG)
 
@@ -89,11 +97,10 @@ menyala.
 
 ## Keterbatasan
 **MooLabel**
-- F1-macro test v1 baru 0,5726 (LR). `kemasan` (0,0000), `saus_terpisah`
-  (0,3333), dan `alat_makan` (0,4118) masih lemah karena gaya kalimat di
-  template test tidak muncul di template train.
-- Data v1 terbatas: 477 catatan dari template, dengan template train dan
-  test berbeda.
+- F1-macro test v2 0,6703 (SVM). Label terlemah `kurangi_bahan` (0,3333)
+  dan `alat_makan` (0,4681).
+- Data v2 terbatas: 540 catatan, 477 dari template dan 63 tulisan anggota
+  tim, belum ada catatan pelanggan asli.
 - Ambang label tetap 0,5 untuk semua label.
 
 **MooBot**
