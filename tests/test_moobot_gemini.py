@@ -3,6 +3,7 @@
 Client Gemini dipalsukan, jadi tidak butuh API key atau jaringan.
 """
 import asyncio
+import logging
 import time
 from types import SimpleNamespace
 
@@ -144,3 +145,46 @@ def test_api_key_kosong_dianggap_tidak_tersedia(monkeypatch):
     monkeypatch.setattr(settings, "gemini_api_key", "")
     with pytest.raises(GeminiUnavailable):
         asyncio.run(ask_gemini("halo", "konteks"))
+
+
+class _Rekam(logging.Handler):
+    def __init__(self):
+        super().__init__()
+        self.records = []
+
+    def emit(self, record):
+        self.records.append(record)
+
+
+@pytest.fixture()
+def rekam():
+    h = _Rekam()
+    gemini.logger.addHandler(h)
+    yield h.records
+    gemini.logger.removeHandler(h)
+
+
+def gagal_dengan(exc):
+    async def f():
+        raise exc
+
+    return f
+
+
+def test_error_dicatat_dengan_jenis_dan_pesan_di_baris_pertama(monkeypatch, rekam):
+    pasang(monkeypatch, {"utama": error(), "cadangan": ok("dari cadangan")})
+    jalan()
+    [r] = [r for r in rekam if r.levelno == logging.ERROR]
+    assert r.getMessage() == "Gemini error (model=utama): RuntimeError: 503 UNAVAILABLE"
+    assert r.exc_info is not None  # traceback tetap ikut
+
+
+def test_pesan_error_dijadikan_satu_baris_dan_dipotong(monkeypatch, rekam):
+    panjang = ValueError("baris satu\nbaris dua " + "x" * 500)
+    pasang(monkeypatch, {"utama": gagal_dengan(panjang), "cadangan": ok("dari cadangan")})
+    jalan()
+    [r] = [r for r in rekam if r.levelno == logging.ERROR]
+    pesan = r.getMessage()
+    assert "\n" not in pesan
+    assert pesan.startswith("Gemini error (model=utama): ValueError: baris satu baris dua x")
+    assert len(pesan) <= len("Gemini error (model=utama): ValueError: ") + 200
