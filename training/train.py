@@ -20,9 +20,11 @@ from sklearn.svm import LinearSVC
 from app.moolabel.labels import LABEL_VERSION, LABELS
 from app.moolabel.preprocess import PREP_VERSION, clean
 
-DATA = "data/moolabel/moolabel_v1.csv"
-REPORT = "training/reports/metrics_v1.json"
-MODEL = "models/moolabel-v1.joblib"
+# Naikkan saat dataset baru disalin dari macymoo-ds; model dan laporan versi lama tidak ditimpa.
+VERSI = "v2"
+DATA = f"data/moolabel/moolabel_{VERSI}.csv"
+REPORT = f"training/reports/metrics_{VERSI}.json"
+MODEL = f"models/moolabel-{VERSI}.joblib"
 
 # di fold CV ada label yang tidak punya contoh positif, warning-nya diabaikan
 warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
@@ -88,7 +90,7 @@ for name, model in models.items():
 BATAS_SERI = 0.01
 selisih_cv = hasil["linsvm"]["f1_macro_cv_train"] - hasil["logreg"]["f1_macro_cv_train"]
 best = "linsvm" if selisih_cv > BATAS_SERI else "logreg"
-model_version = best + "-v1"
+model_version = f"{best}-{VERSI}"
 print("model terpilih:", model_version)
 
 joblib.dump({

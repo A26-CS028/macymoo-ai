@@ -1,0 +1,44 @@
+{
+  "data": "data/moolabel/moolabel_v2.csv",
+  "jumlah_train": 316,
+  "jumlah_test": 224,
+  "label_version": "v0.3",
+  "prep_version": "prep-v1",
+  "sklearn_version": "1.7.2",
+  "hasil": {
+    "logreg": {
+      "C": 100,
+      "class_weight": "balanced",
+      "f1_macro_cv_train": 0.6518,
+      "f1_macro_test": 0.6863,
+      "f1_per_label_test": {
+        "saus_terpisah": 0.68,
+        "alergi": 1.0,
+        "kurangi_bahan": 0.3692,
+        "tambah_bahan": 0.8214,
+        "kemasan": 0.6222,
+        "alat_makan": 0.5,
+        "waktu_antar": 0.6154,
+        "titip_antar": 0.8824
+      }
+    },
+    "linsvm": {
+      "C": 30,
+      "class_weight": null,
+      "f1_macro_cv_train": 0.6657,
+      "f1_macro_test": 0.6703,
+      "f1_per_label_test": {
+        "saus_terpisah": 0.625,
+        "alergi": 1.0,
+        "kurangi_bahan": 0.3333,
+        "tambah_bahan": 0.7778,
+        "kemasan": 0.6222,
+        "alat_makan": 0.4681,
+        "waktu_antar": 0.65,
+        "titip_antar": 0.8857
+      }
+    }
+  },
+  "terpilih": "linsvm-v2",
+  "model_sha256": "d3e13781abadbeeca35451fa952586cbc24b923f2b947ba53176d1d8b4b3cefb"
+}
