@@ -1,15 +1,15 @@
-import logging
 import time
 
 from fastapi import APIRouter, Depends, HTTPException
 
 from ..config import settings
+from ..log import get_logger
 from ..security import verify_secret
 from .gemini import GeminiUnavailable, ask_gemini
 from .rag import cari_faq
 from .schemas import ChatRequest, ChatResponse
 
-logger = logging.getLogger("uvicorn.error")
+logger = get_logger("moobot")
 
 router = APIRouter(
     prefix="/moobot",

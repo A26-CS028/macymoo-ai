@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import time
 from collections.abc import Sequence
 from functools import lru_cache
@@ -8,9 +7,10 @@ from google import genai
 from google.genai import types
 
 from ..config import settings
+from ..log import get_logger
 from .prompt import build_system_prompt
 
-logger = logging.getLogger("uvicorn.error")
+logger = get_logger("gemini")
 
 
 class GeminiUnavailable(Exception):

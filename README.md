@@ -102,6 +102,11 @@ berbeda dengan `<konteks>`, yang dipakai `<konteks>`.
   dalam batas total 10 detik.
 - **Tidak ada FAQ di atas ambang:** blok `<faq>` tidak dikirim, sehingga
   pertanyaan di luar topik tetap ditolak oleh aturan prompt.
+- **Log:** setiap chat mencatat jalur pencarian ke stderr, mis.
+  `INFO macymoo.moobot: moobot rag jalur=embed faq=['F12']` (`jalur` =
+  `embed`, `tfidf`, atau `tanpa`). Di Vercel, cari `jalur=` di Runtime Logs.
+  Semua log aplikasi memakai logger `macymoo` (`app/log.py`), bukan
+  `uvicorn.error`, karena di Vercel logging uvicorn tidak dikonfigurasi.
 
 Setiap kali `faq_seed.json` atau `faq_variasi.json` diubah, buat ulang vektor
 (butuh `GEMINI_API_KEY`); tes `test_vektor_repo_cocok_dengan_data` gagal bila

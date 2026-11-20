@@ -6,7 +6,6 @@ Skor satu FAQ = skor tertinggi dari kalimat-kalimatnya.
 import asyncio
 import hashlib
 import json
-import logging
 import time
 from dataclasses import dataclass
 from functools import lru_cache
@@ -22,10 +21,11 @@ from google import genai
 from google.genai import types
 
 from ..config import settings
+from ..log import get_logger
 from ..moolabel.preprocess import clean
 from . import gemini
 
-logger = logging.getLogger("uvicorn.error")
+logger = get_logger("rag")
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 DIMENSI = 768
