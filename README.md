@@ -70,20 +70,20 @@ Model terpilih: `logreg-v1` (`models/moolabel-v1.joblib`). Model dipilih dari F1
 
 `kemasan`, `saus_terpisah`, dan `alat_makan` masih lemah karena gaya kalimat di template test tidak muncul di template train. Dataset v2 dari tim DS menambah template untuk ketiga label ini; model dilatih ulang setelah data uji v2 dibekukan.
 
-## Cakupan RAG MooBot
+## Cakupan MooBot (tanpa RAG)
 
 MooBot tidak memakai vector store. Retrieval dilakukan Express: setiap request
 ke `POST /v1/moobot/chat` membawa `context` (menu, tanggal ditutup, aturan)
 yang disusun dari database. Gemini hanya boleh menjawab dari `context` itu.
 
-`data/faq_seed.json` berisi 18 FAQ yang diturunkan dari format `context`
-yang sama, dipakai sebagai basis pengetahuan awal dan bahan uji. Angka dan
-aturan di sana tidak boleh bertentangan dengan `context`; bila berbeda,
-`context` yang dipakai.
+`data/faq_seed.json` berisi 18 FAQ dari Keputusan Final bagian 9.7. Harga
+menu tidak ditulis di jawaban; placeholder `{menu}` diisi dari `context`.
+Seed ini belum dimasukkan ke prompt; saat ini baru dipakai sebagai bahan uji.
 
 Perilaku MooBot diuji dengan 30 pertanyaan di `scripts/prompt_cases.py`,
 termasuk 16 kasus yang harus ditolak (kalori dan klaim kesehatan, pesan atau
-cek status lewat chat, prompt injection, dan 10 pertanyaan di luar konteks).
+cek status lewat chat, prompt injection, pengetahuan umum, dan 10 pertanyaan
+di luar konteks).
 Jalankan `python -m scripts.check_prompts http://localhost:8000` dengan server
 menyala.
 
@@ -101,10 +101,8 @@ menyala.
   diarahkan ke Nabila lewat WhatsApp.
 - Tidak tahu tanggal hari ini kecuali dikirim di `context`.
 - Bergantung pada Gemini API: model utama kadang lambat atau sibuk. Ada model
-  cadangan dan anggaran total 10 detik; bila semuanya gagal, balasan 503 dan
-  pesanan tetap tersimpan. Nama model diatur lewat environment variable.
-
-(diisi nanti)
+  cadangan dan anggaran total 10 detik; bila semuanya gagal, balasan 503.
+  Nama model diatur lewat environment variable.
 
 ## Struktur
 

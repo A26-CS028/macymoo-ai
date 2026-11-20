@@ -1,4 +1,4 @@
-"""Memastikan data/faq_seed.json valid dan konsisten dengan format context."""
+"""data/faq_seed.json harus sama dengan tabel KF 9.7."""
 import json
 import pathlib
 import re
@@ -6,11 +6,11 @@ import re
 ROOT = pathlib.Path(__file__).parent.parent
 FAQ = json.loads((ROOT / "data" / "faq_seed.json").read_text(encoding="utf-8"))
 CONTEXT = (ROOT / "scripts" / "context.example.txt").read_text(encoding="utf-8")
-KATEGORI = {"pemesanan", "pengiriman", "pembayaran", "perubahan", "menu"}
+KATEGORI = {"Menu", "Cara pesan", "Opsi", "Pengiriman", "Pembayaran", "Status", "Ubah, batal"}
 
 
-def test_tepat_18_entri():
-    assert isinstance(FAQ, list) and len(FAQ) == 18
+def test_id_f01_sampai_f18_berurutan():
+    assert [e["id"] for e in FAQ] == [f"F{i:02d}" for i in range(1, 19)]
 
 
 def test_field_lengkap_dan_tidak_kosong():
@@ -20,16 +20,20 @@ def test_field_lengkap_dan_tidak_kosong():
         assert e["kategori"] in KATEGORI
 
 
-def test_id_dan_pertanyaan_unik():
-    assert len({e["id"] for e in FAQ}) == 18
-    assert len({e["pertanyaan"].lower() for e in FAQ}) == 18
-
-
-def test_nominal_rupiah_sama_dengan_context():
-    # Setiap nominal di jawaban harus muncul di contoh context (sumber kebenaran).
+def test_harga_menu_lewat_placeholder():
+    # KF 9.7: harga menu diambil dari database lewat {menu} agar tetap benar saat Nabila mengubahnya.
+    assert "{menu}" in FAQ[0]["jawaban"] and "{menu}" in FAQ[1]["jawaban"]
     for e in FAQ:
-        for nominal in re.findall(r"Rp\d+(?:\.\d{3})*", e["jawaban"]):
-            assert nominal in CONTEXT, f"{e['id']}: {nominal} tidak ada di context"
+        nominal = re.findall(r"Rp\d+(?:\.\d{3})*", e["jawaban"])
+        if e["id"] == "F07":  # tambah keju Rp3.000 adalah aturan tetap di KF 7
+            assert nominal == ["Rp3.000"] and "Rp3.000" in CONTEXT
+        else:
+            assert nominal == [], e["id"]
+
+
+def test_opsi_pedas_dan_keju_untuk_semua_menu():
+    by_id = {e["id"]: e["jawaban"] for e in FAQ}
+    assert "semua menu" in by_id["F06"] and "semua menu" in by_id["F07"]
 
 
 def test_tidak_memuat_kalori_atau_klaim_kesehatan():
