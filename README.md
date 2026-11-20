@@ -14,7 +14,7 @@ Dataset MooLabel dibuat di [macymoo-ds](https://github.com/A26-CS028/macymoo-ds)
 
 | Berkas | Versi dataset | Commit asal di macymoo-ds |
 |---|---|---|
-| `data/moolabel/moolabel_v1.csv` | v1 (477 catatan) | `fd38fb0` |
+| `data/moolabel/moolabel_v1.csv` | v1 (477 catatan) | `23cd83b` |
 
 Setiap kali dataset disalin ulang, perbarui baris tabel di atas (`git log -1 --format=%h -- moolabel-dataset/output/moolabel_v1.csv` di macymoo-ds).
 
