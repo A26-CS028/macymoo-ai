@@ -43,7 +43,16 @@ Uji batas bundel Python Vercel (500 MB), 13 November 2026:
 | `POST /v1/moobot/chat` tanpa secret / secret salah | 401 |
 | `GET /health` dan `/docs` | 404 |
 
-Belum diuji: jawaban MooBot dengan secret asli dan endpoint MooLabel (router aktif di minggu 2). File model `.joblib` belum ikut dihitung.
+Uji MooBot di production dengan secret asli, 21 November 2026 08.50 WIB (commit `71dd5a4`):
+
+| Item | Hasil |
+|---|---|
+| 5 chat pertama, server dingin | 200 semua; 8,2 detik (termasuk cold start), lalu 1,4–2,0 detik |
+| 16 kasus tolak (`scripts/prompt_cases.py`) | 16/16 menolak dengan benar; 1 ("Aku mau pesan 2 Mackster") diarahkan ke form website |
+| 503 | 2 dari 21 request yang dikirim dalam ±1,5 menit: model utama `429 RESOURCE_EXHAUSTED` (batas per menit kuota gratis), cadangan habis waktu. Diulang 1 menit kemudian: 200 |
+
+Uji 20 November 20.00 WIB: 16/30 dibalas 503 (Gemini `503 UNAVAILABLE`, kuota cadangan habis).
+Endpoint MooLabel belum diuji di production (minggu 3). File model `.joblib` belum ikut dihitung.
 
 ## Evaluasi
 
@@ -155,6 +164,8 @@ menyala.
 - Bergantung pada Gemini API: model utama kadang lambat atau sibuk. Ada model
   cadangan dan anggaran total 10 detik; bila semuanya gagal, balasan 503.
   Nama model diatur lewat environment variable.
+- Kuota gratis Gemini punya batas request per menit. Lonjakan request bisa
+  melewatinya (model utama dibalas 429) sehingga MooBot membalas 503.
 - RAG FAQ hanya mencakup 18 FAQ. Variasi pertanyaan dan set uji dibuat tim,
   bukan dari pertanyaan pelanggan asli, jadi hit@k di atas belum mewakili
   pemakaian nyata. Pencarian TF-IDF berbasis kata, sehingga parafrase yang
