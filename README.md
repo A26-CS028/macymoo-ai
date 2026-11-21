@@ -76,7 +76,7 @@ Perbandingan pada data test yang sama (`python -m training.evaluate`, data test 
 | `logreg-v1` | 0,6430 | 0,5500 | 0,8045 |
 | `linsvm-v2` | 0,6703 | 0,5852 | 0,8353 |
 
-Template tambahan v2 untuk `kemasan`, `saus_terpisah`, dan `alat_makan` menaikkan ketiga label itu. `kurangi_bahan` dan `waktu_antar` turun dibanding v1; data test keduanya berbeda, jadi penurunan ini perlu dicek per catatan.
+Template tambahan v2 untuk `kemasan`, `saus_terpisah`, dan `alat_makan` menaikkan ketiga label itu. `kurangi_bahan` dan `waktu_antar` turun dibanding v1 karena dua hal ([analisis per catatan](training/reports/analisis_label_v2.md), `python -m training.analyze_labels`). Pertama, template train kedua label tidak berubah, sedangkan data test v2 menambah catatan dengan kata yang tidak ada di train ("skip", "dikurangi", "usahain datang", "lewat dari jam"); `logreg-v1` pun turun di data test v2 (0,412 dan 0,714). Kedua, di data test yang sama `linsvm-v2` lebih jarang memberi label: 12 dari 21 `kurangi_bahan` dan 9 dari 14 `waktu_antar` yang terlewat punya skor 0,40–0,50. Selain itu, 10 dari 23 salah tandai `kurangi_bahan` adalah "jangan (terlalu) pedas", yang menurut kesepakatan label tidak berlabel. Perbaikannya lewat template train baru dan ambang per label dari CV di v3, bukan dengan mengubah v2.
 
 ## Cakupan MooBot dan RAG FAQ (side quest)
 
