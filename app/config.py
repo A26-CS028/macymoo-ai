@@ -31,5 +31,9 @@ class Settings(BaseSettings):
     gemini_embed_model: str = "gemini-embedding-001"
     moobot_embed_timeout: float = 1.5
 
+    # MooLabel: path relatif dibaca dari root repo; file dimuat hanya jika sha256-nya sama
+    moolabel_model_path: str = "models/moolabel-v2.joblib"
+    moolabel_model_sha256: str = "d3e13781abadbeeca35451fa952586cbc24b923f2b947ba53176d1d8b4b3cefb"
+
 
 settings = Settings()
