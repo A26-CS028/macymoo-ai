@@ -52,7 +52,16 @@ Uji MooBot di production dengan secret asli, 21 November 2026 08.50 WIB (commit 
 | 503 | 2 dari 21 request yang dikirim dalam ±1,5 menit: model utama `429 RESOURCE_EXHAUSTED` (batas per menit kuota gratis), cadangan habis waktu. Diulang 1 menit kemudian: 200 |
 
 Uji 20 November 20.00 WIB: 16/30 dibalas 503 (Gemini `503 UNAVAILABLE`, kuota cadangan habis).
-Endpoint MooLabel belum diuji di production (minggu 3). File model `.joblib` belum ikut dihitung.
+
+Uji ulang 23 November 2026 01.19 WIB (commit `5d5ac6d`, region `sin1`, server dingin setelah ±16 menit tanpa request):
+
+| Item | Hasil |
+|---|---|
+| 5 chat yang sama ("Harga Mackster berapa kak?") | 200 semua; 10,5 detik (cold start dan embedding ±6 detik, Gemini ±3,7 detik), lalu 1,4–2,6 detik |
+| Runtime Logs | Tanpa `Gemini timeout`/`Gemini error`; RAG `jalur=embed` di kelima chat |
+| `POST /v1/moolabel/predict` | 200 dalam 0,5 detik, `model_version` `linsvm-v2`; "sausnya dipisah ya kak, saya alergi kacang" → `saus_terpisah`, `alergi`. File model `.joblib` ikut ter-deploy |
+
+Chat pertama saat dingin melewati target 10 detik tetapi masih di bawah batas fungsi 15 detik.
 
 ## Evaluasi
 
