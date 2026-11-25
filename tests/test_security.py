@@ -1,3 +1,5 @@
+import pytest
+
 from app.moobot import router as moobot_router
 from app.moobot.gemini import GeminiUnavailable
 
@@ -6,7 +8,21 @@ URL = "/v1/moobot/chat"
 
 
 def test_health_tanpa_secret(client):
-    assert client.get("/v1/health").status_code == 200
+    r = client.get("/v1/health")
+    assert r.status_code == 200 and r.json() == {"status": "ok"}
+
+
+@pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json"])
+def test_dokumentasi_api_dimatikan(client, path):
+    assert client.get(path).status_code == 404
+
+
+@pytest.mark.parametrize("url,body", [
+    (URL, BODY),
+    ("/v1/moolabel/predict", {"items": [{"order_item_id": 1, "note": "saus pisah"}]}),
+])
+def test_secret_kosong_ditolak(client, url, body):
+    assert client.post(url, json=body, headers={"X-Internal-Secret": ""}).status_code == 401
 
 
 def test_path_tanpa_v1_tidak_ada(client, auth):
@@ -50,13 +66,17 @@ def test_input_kosong_ditolak(client, auth):
     assert r.status_code == 422
 
 
+def test_message_terlalu_panjang_ditolak(client, auth):
+    r = client.post(URL, json={"message": "a" * 501, "context": "x"}, headers=auth)
+    assert r.status_code == 422
+
+
 def test_context_terlalu_panjang_ditolak(client, auth):
     r = client.post(URL, json={"message": "halo", "context": "x" * 8001}, headers=auth)
     assert r.status_code == 422
 
 
 def test_secret_pendek_ditolak_saat_start():
-    import pytest
     from pydantic import ValidationError
 
     from app.config import Settings
@@ -66,7 +86,6 @@ def test_secret_pendek_ditolak_saat_start():
 
 
 def test_thinking_level_salah_ditolak_saat_start():
-    import pytest
     from pydantic import ValidationError
 
     from app.config import Settings
