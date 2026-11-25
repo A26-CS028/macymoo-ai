@@ -78,4 +78,4 @@ Data test v2 sudah dibekukan 18 Nov dan tidak diubah. Ambang tidak diturunkan be
    - Tidak berlabel: "jangan terlalu pedas", "maag, jangan pedas".
    - Kalimat pembeda: "saus jangan digabung" (`saus_terpisah`), "alat makan ga usah" (`alat_makan`), "pisah" di samping "dipisah", dan gabungan alergi dengan saus.
 2. Training v3: ambang per label dipilih dari prediksi out-of-fold GroupKFold di data train, dan `class_weight` dibandingkan per label, bukan hanya lewat F1-macro.
-3. Hasil v3 diukur di data test v2 yang sama, lalu dibandingkan dengan tabel bagian 1.
+3. Hasil v3 diukur di data test v2 yang sama, lalu dibandingkan dengan tabel bagian 1. Karena template v3 disusun dari kesalahan di test v2, skor v3 di test v2 akan terlalu optimis; DS perlu test v3 baru dari template yang belum pernah dilihat.

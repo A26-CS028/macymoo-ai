@@ -90,7 +90,7 @@ class RagIndex:
             return None, "faq_vectors.json belum ada"
         try:
             return self._cek_vektor(json.loads(f.read_text(encoding="utf-8")), data_dir)
-        except (ValueError, KeyError, TypeError, AttributeError) as e:
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
             return None, f"faq_vectors.json rusak ({type(e).__name__})"
 
     def _cek_vektor(self, isi: dict, data_dir: Path):

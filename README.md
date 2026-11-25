@@ -162,8 +162,10 @@ menyala.
 **MooLabel**
 - F1-macro test v2 0,6703 (SVM). Label terlemah `kurangi_bahan` (0,3333)
   dan `alat_makan` (0,4681).
-- Data v2 terbatas: 540 catatan, 477 dari template dan 63 tulisan anggota
-  tim, belum ada catatan pelanggan asli.
+- Semua data sintetis (dummy) buatan tim: DS membuatnya dari template dan
+  parafrase seed KF 9.6, ditambah 63 catatan tulisan anggota tim. Belum ada
+  catatan pelanggan asli. Panduan kolom: `moolabel-dataset/data_dictionary.md`
+  di repo macymoo-ds.
 - Ambang label tetap 0,5 untuk semua label.
 
 **MooBot**

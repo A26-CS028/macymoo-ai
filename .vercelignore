@@ -4,4 +4,5 @@ data/*
 !data/faq_variasi.json
 !data/faq_vectors.json
 tests/
+.env*
 models/moolabel-v1.joblib
