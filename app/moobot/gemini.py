@@ -70,9 +70,9 @@ async def ask_gemini(
             logger.warning("Gemini timeout %.1fs (model=%s)", budget, model)
             continue
         except Exception as e:
-            # jenis dan pesan error di baris pertama: daftar log Vercel memotong traceback
+            # jenis + pesan terpotong saja; traceback (exc_info) akan mencetak teks error provider utuh
             pesan = " ".join(str(e).split())[:200]
-            logger.error("Gemini error (model=%s): %s: %s", model, type(e).__name__, pesan, exc_info=True)
+            logger.error("Gemini error (model=%s): %s: %s", model, type(e).__name__, pesan)
             continue
 
         text = (res.text or "").strip()

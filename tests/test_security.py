@@ -81,8 +81,9 @@ def test_secret_pendek_ditolak_saat_start():
 
     from app.config import Settings
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(ValidationError) as e:
         Settings(internal_secret="terlalu-pendek")
+    assert "terlalu-pendek" not in str(e.value)  # nilai secret tidak ikut ke log
 
 
 def test_thinking_level_salah_ditolak_saat_start():
