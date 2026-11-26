@@ -176,7 +176,7 @@ def test_error_dicatat_dengan_jenis_dan_pesan_di_baris_pertama(monkeypatch, reka
     jalan()
     [r] = [r for r in rekam if r.levelno == logging.ERROR]
     assert r.getMessage() == "Gemini error (model=utama): RuntimeError: 503 UNAVAILABLE"
-    assert r.exc_info is not None  # traceback tetap ikut
+    assert r.exc_info is None  # traceback tidak ikut: teks error provider tidak terpotong di sana
 
 
 def test_pesan_error_dijadikan_satu_baris_dan_dipotong(monkeypatch, rekam):

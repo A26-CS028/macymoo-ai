@@ -5,7 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # hide_input_in_errors: pesan ValidationError tidak memuat nilai secret yang salah
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", hide_input_in_errors=True)
 
     # minimal 32 karakter supaya tidak bisa ditebak; app gagal start kalau lebih pendek
     internal_secret: str = Field(min_length=32)
